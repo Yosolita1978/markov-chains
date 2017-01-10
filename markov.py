@@ -1,4 +1,5 @@
 from random import choice
+import sys
 
 
 def open_and_read_file(file_path):
@@ -37,10 +38,10 @@ def make_chains(text_string):
     word_list = text_string.split()
 
 
-    for i in range(len(word_list) - 2):
-        key_link = (word_list[i], word_list[i+1])
+    for i in range(len(word_list) - 3):
+        key_link = (word_list[i], word_list[i+1],  word_list[i+2])
         value_list = chains.get(key_link, [])
-        value_list.append(word_list[i+2])
+        value_list.append(word_list[i+3])
         chains[key_link] = value_list 
     return chains
 
@@ -55,18 +56,18 @@ def make_text(chains):
     start_key = choice(chains.keys())
     runing_key = start_key
     while True:
-        text += runing_key[0] + ' ' + runing_key[1]
+        text += runing_key[0] + ' ' + runing_key[1] + ' ' + runing_key[2]
         try:
             text_value = choice(chains[runing_key])
         except KeyError:
             break
         text = text + ' ' + text_value + ' '
-        runing_key = (runing_key[1], text_value)  
+        runing_key = (runing_key[1], runing_key[2], text_value)  
 
     return text
 
 
-input_path = "green-eggs.txt"
+input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
@@ -74,7 +75,7 @@ input_text = open_and_read_file(input_path)
 # Get a Markov chain
 chains = make_chains(input_text)
 
-print chains
+#print chains
 
 # Produce random text
 random_text = make_text(chains)
