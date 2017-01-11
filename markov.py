@@ -1,5 +1,6 @@
 from random import choice
 import sys
+import string
 
 
 def open_and_read_file(file_path):
@@ -62,7 +63,10 @@ def make_text(chains):
         text += runing_key[0] + ' ' + runing_key[1] + ' ' + runing_key[2]
         try:
             text_value = choice(chains[runing_key])
-            if text_value.endswith("?", -2, -1):
+            # if text_value[-1:] in list(string.punctuation):
+            if text_value[-1:] in ['.', '?']:
+                # print text_value[-1:]
+                text = text + ' ' + text_value + ' '
                 break
         except KeyError:
             break
