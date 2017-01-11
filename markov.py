@@ -54,11 +54,16 @@ def make_text(chains):
     # your code goes here
 
     start_key = choice(chains.keys())
+    while not start_key[0][0].isupper():
+        start_key = choice(chains.keys())
+
     runing_key = start_key
     while True:
         text += runing_key[0] + ' ' + runing_key[1] + ' ' + runing_key[2]
         try:
             text_value = choice(chains[runing_key])
+            if text_value.endswith("?", -2, -1):
+                break
         except KeyError:
             break
         text = text + ' ' + text_value + ' '
